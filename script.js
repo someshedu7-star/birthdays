@@ -118,6 +118,40 @@ function makeSceneHearts(amount = 24) {
     }
 }
 
+function makeHeartDrops(amount = 18) {
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    if (!activeScene) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const heart = document.createElement('span');
+        heart.className = 'heart-drop';
+        heart.textContent = '♥';
+        heart.style.left = `${6 + Math.random() * 88}%`;
+        heart.style.animationDelay = `${Math.random() * 1.2}s`;
+        heart.style.animationDuration = `${3.2 + Math.random() * 2.4}s`;
+        heart.style.fontSize = `${12 + Math.random() * 18}px`;
+        activeScene.appendChild(heart);
+
+        window.setTimeout(() => heart.remove(), 7000);
+    }
+}
+
+function makeFirecrackerBurst(amount = 4) {
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    if (!activeScene) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const burst = document.createElement('span');
+        burst.className = 'cracker-burst';
+        burst.style.left = `${18 + Math.random() * 64}%`;
+        burst.style.top = `${16 + Math.random() * 46}%`;
+        burst.style.animationDelay = `${Math.random() * 0.5}s`;
+        activeScene.appendChild(burst);
+
+        window.setTimeout(() => burst.remove(), 1800);
+    }
+}
+
 function launchConfetti(amount = 80) {
     const container = document.querySelector('.confetti-cannon-container');
     if (!container) return;
@@ -196,6 +230,8 @@ function renderNote() {
     void romanceNote.offsetWidth;
     romanceNote.classList.add('note-enter');
     makeSceneHearts(18);
+    makeHeartDrops(14);
+    makeFirecrackerBurst(3);
 }
 
 startButton.addEventListener('click', () => {
@@ -224,6 +260,8 @@ continueButton.addEventListener('click', () => {
     showStep('step5');
     renderNote();
     makeSceneHearts(28);
+    makeHeartDrops(20);
+    makeFirecrackerBurst(4);
 });
 
 nextNoteButton.addEventListener('click', () => {
@@ -234,9 +272,11 @@ nextNoteButton.addEventListener('click', () => {
     }
 
     showStep('step6');
-    makeSceneHearts(46);
-    launchConfetti(70);
-    launchFireworks(8);
+    makeSceneHearts(60);
+    makeHeartDrops(34);
+    makeFirecrackerBurst(8);
+    launchConfetti(90);
+    launchFireworks(10);
 });
 
 replayButton.addEventListener('click', () => {
