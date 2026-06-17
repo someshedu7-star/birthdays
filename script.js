@@ -3,14 +3,36 @@ const startButton = document.getElementById('startButton');
 const envelopeContainer = document.getElementById('envelopeContainer');
 const letterContainer = document.getElementById('letterContainer');
 const unfoldButton = document.getElementById('unfoldButton');
+const continueButton = document.getElementById('continueButton');
+const nextNoteButton = document.getElementById('nextNoteButton');
+const replayButton = document.getElementById('replayButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicToggle = document.getElementById('musicToggle');
 const finalGreeting = document.getElementById('finalGreeting');
+const romanceNote = document.getElementById('romanceNote');
+const noteCount = document.getElementById('noteCount');
+const noteTitle = document.getElementById('noteTitle');
+const noteText = document.getElementById('noteText');
 
 const balloonColors = ['#ff5c8a', '#ffd166', '#ef476f', '#7bdff2', '#cdb4db'];
 const confettiColors = ['#ff5c8a', '#ffd166', '#ffffff', '#f7a1c4', '#b8f2e6'];
+const romanticNotes = [
+    {
+        title: 'For every smile',
+        text: 'Your smile has a way of making ordinary moments feel like something worth remembering forever.'
+    },
+    {
+        title: 'For every little moment',
+        text: 'I hope today wraps you in the kind of happiness that feels soft, honest, and beautifully yours.'
+    },
+    {
+        title: 'For the person you are',
+        text: 'You are special in ways words can only try to hold, and this little surprise is one tiny piece of that feeling.'
+    }
+];
 let musicWanted = false;
 let celebrationStarted = false;
+let noteIndex = 0;
 
 function showStep(stepId) {
     steps.forEach((step) => {
@@ -75,6 +97,24 @@ function makeHeartBurst(amount = 28) {
         container.appendChild(heart);
 
         window.setTimeout(() => heart.remove(), 12000);
+    }
+}
+
+function makeSceneHearts(amount = 24) {
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    if (!activeScene) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const heart = document.createElement('span');
+        heart.className = 'scene-heart';
+        heart.textContent = '♥';
+        heart.style.left = `${8 + Math.random() * 84}%`;
+        heart.style.animationDelay = `${Math.random() * 0.9}s`;
+        heart.style.animationDuration = `${3.8 + Math.random() * 2.6}s`;
+        heart.style.fontSize = `${14 + Math.random() * 24}px`;
+        activeScene.appendChild(heart);
+
+        window.setTimeout(() => heart.remove(), 7000);
     }
 }
 
@@ -145,6 +185,19 @@ function startCelebrationEffects() {
     window.setInterval(() => launchFireworks(4), 5400);
 }
 
+function renderNote() {
+    const note = romanticNotes[noteIndex];
+    noteCount.textContent = `Note ${noteIndex + 1} of ${romanticNotes.length}`;
+    noteTitle.textContent = note.title;
+    noteText.textContent = note.text;
+    nextNoteButton.textContent = noteIndex === romanticNotes.length - 1 ? 'Final Reveal' : 'Next Note';
+
+    romanceNote.classList.remove('note-enter');
+    void romanceNote.offsetWidth;
+    romanceNote.classList.add('note-enter');
+    makeSceneHearts(18);
+}
+
 startButton.addEventListener('click', () => {
     playMusic();
     showStep('step2');
@@ -164,6 +217,32 @@ unfoldButton.addEventListener('click', () => {
     showStep('step4');
     if (musicWanted) playMusic();
     startCelebrationEffects();
+});
+
+continueButton.addEventListener('click', () => {
+    noteIndex = 0;
+    showStep('step5');
+    renderNote();
+    makeSceneHearts(28);
+});
+
+nextNoteButton.addEventListener('click', () => {
+    if (noteIndex < romanticNotes.length - 1) {
+        noteIndex += 1;
+        renderNote();
+        return;
+    }
+
+    showStep('step6');
+    makeSceneHearts(46);
+    launchConfetti(70);
+    launchFireworks(8);
+});
+
+replayButton.addEventListener('click', () => {
+    showStep('step4');
+    startCelebrationEffects();
+    makeHeartBurst(36);
 });
 
 musicToggle.addEventListener('click', () => {
