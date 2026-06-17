@@ -6,6 +6,11 @@ const unfoldButton = document.getElementById('unfoldButton');
 const continueButton = document.getElementById('continueButton');
 const nextNoteButton = document.getElementById('nextNoteButton');
 const replayButton = document.getElementById('replayButton');
+const runawayYesButton = document.getElementById('runawayYesButton');
+const noWhyButton = document.getElementById('noWhyButton');
+const pickupActions = document.getElementById('pickupActions');
+const pickupAnswer = document.getElementById('pickupAnswer');
+const pickupContinueButton = document.getElementById('pickupContinueButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicToggle = document.getElementById('musicToggle');
 const finalGreeting = document.getElementById('finalGreeting');
@@ -101,7 +106,7 @@ function makeHeartBurst(amount = 28) {
 }
 
 function makeSceneHearts(amount = 24) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -119,7 +124,7 @@ function makeSceneHearts(amount = 24) {
 }
 
 function makeHeartDrops(amount = 18) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -137,7 +142,7 @@ function makeHeartDrops(amount = 18) {
 }
 
 function makeFirecrackerBurst(amount = 4) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -150,6 +155,29 @@ function makeFirecrackerBurst(amount = 4) {
 
         window.setTimeout(() => burst.remove(), 1800);
     }
+}
+
+function moveRunawayButton() {
+    const maxX = 120;
+    const maxY = 72;
+    const x = Math.round((Math.random() * maxX * 2) - maxX);
+    const y = Math.round((Math.random() * maxY * 2) - maxY);
+    runawayYesButton.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() > 0.5 ? 7 : -7}deg)`;
+    makeHeartDrops(5);
+}
+
+function resetPickupScene() {
+    pickupActions.classList.remove('is-hidden');
+    pickupAnswer.classList.remove('is-visible');
+    runawayYesButton.style.transform = '';
+}
+
+function showPickupAnswer() {
+    pickupActions.classList.add('is-hidden');
+    pickupAnswer.classList.add('is-visible');
+    makeSceneHearts(30);
+    makeHeartDrops(22);
+    makeFirecrackerBurst(5);
 }
 
 function launchConfetti(amount = 80) {
@@ -271,7 +299,24 @@ nextNoteButton.addEventListener('click', () => {
         return;
     }
 
+    resetPickupScene();
     showStep('step6');
+    makeSceneHearts(34);
+    makeHeartDrops(24);
+    makeFirecrackerBurst(5);
+});
+
+runawayYesButton.addEventListener('pointerenter', moveRunawayButton);
+runawayYesButton.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    moveRunawayButton();
+});
+runawayYesButton.addEventListener('focus', moveRunawayButton);
+
+noWhyButton.addEventListener('click', showPickupAnswer);
+
+pickupContinueButton.addEventListener('click', () => {
+    showStep('step7');
     makeSceneHearts(60);
     makeHeartDrops(34);
     makeFirecrackerBurst(8);
