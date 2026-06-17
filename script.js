@@ -1,0 +1,175 @@
+const steps = Array.from(document.querySelectorAll('.step'));
+const startButton = document.getElementById('startButton');
+const envelopeContainer = document.getElementById('envelopeContainer');
+const letterContainer = document.getElementById('letterContainer');
+const unfoldButton = document.getElementById('unfoldButton');
+const backgroundMusic = document.getElementById('backgroundMusic');
+const musicToggle = document.getElementById('musicToggle');
+const finalGreeting = document.getElementById('finalGreeting');
+
+const balloonColors = ['#ff5c8a', '#ffd166', '#ef476f', '#7bdff2', '#cdb4db'];
+const confettiColors = ['#ff5c8a', '#ffd166', '#ffffff', '#f7a1c4', '#b8f2e6'];
+let musicWanted = false;
+let celebrationStarted = false;
+
+function showStep(stepId) {
+    steps.forEach((step) => {
+        step.classList.toggle('active', step.id === stepId);
+    });
+}
+
+async function playMusic() {
+    if (!backgroundMusic) return;
+
+    musicWanted = true;
+    backgroundMusic.volume = 0.55;
+
+    try {
+        await backgroundMusic.play();
+        musicToggle.textContent = 'Music On';
+        musicToggle.classList.add('is-playing');
+    } catch (error) {
+        musicToggle.textContent = 'Tap For Music';
+        musicToggle.classList.remove('is-playing');
+    }
+}
+
+function pauseMusic() {
+    if (!backgroundMusic) return;
+
+    backgroundMusic.pause();
+    musicWanted = false;
+    musicToggle.textContent = 'Music Off';
+    musicToggle.classList.remove('is-playing');
+}
+
+function typeGreeting() {
+    const message = 'Happy Birthday,';
+    let index = 0;
+    finalGreeting.textContent = '';
+    finalGreeting.classList.remove('typed');
+
+    const timer = window.setInterval(() => {
+        finalGreeting.textContent += message[index];
+        index += 1;
+
+        if (index >= message.length) {
+            window.clearInterval(timer);
+            finalGreeting.classList.add('typed');
+        }
+    }, 85);
+}
+
+function makeHeartBurst(amount = 28) {
+    const container = document.querySelector('.hearts-container');
+    if (!container) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const heart = document.createElement('span');
+        heart.className = 'floating-heart';
+        heart.textContent = '♥';
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDelay = `${Math.random() * 2.4}s`;
+        heart.style.animationDuration = `${6 + Math.random() * 5}s`;
+        heart.style.fontSize = `${16 + Math.random() * 26}px`;
+        container.appendChild(heart);
+
+        window.setTimeout(() => heart.remove(), 12000);
+    }
+}
+
+function launchConfetti(amount = 80) {
+    const container = document.querySelector('.confetti-cannon-container');
+    if (!container) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const confetti = document.createElement('span');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.backgroundColor = confettiColors[i % confettiColors.length];
+        confetti.style.animationDelay = `${Math.random() * 0.9}s`;
+        confetti.style.animationDuration = `${2.8 + Math.random() * 1.8}s`;
+        container.appendChild(confetti);
+
+        window.setTimeout(() => confetti.remove(), 5600);
+    }
+}
+
+function launchBalloons(amount = 12) {
+    const container = document.querySelector('.balloons-container');
+    if (!container) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const balloon = document.createElement('span');
+        balloon.className = 'balloon';
+        balloon.style.left = `${4 + Math.random() * 92}%`;
+        balloon.style.backgroundColor = balloonColors[i % balloonColors.length];
+        balloon.style.animationDelay = `${Math.random() * 5}s`;
+        balloon.style.animationDuration = `${10 + Math.random() * 7}s`;
+        container.appendChild(balloon);
+
+        window.setTimeout(() => balloon.remove(), 18000);
+    }
+}
+
+function launchFireworks(amount = 8) {
+    const container = document.querySelector('.fireworks-container');
+    if (!container) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const firework = document.createElement('span');
+        firework.className = 'firework';
+        firework.style.left = `${12 + Math.random() * 76}%`;
+        firework.style.top = `${62 + Math.random() * 22}%`;
+        firework.style.backgroundColor = confettiColors[i % confettiColors.length];
+        firework.style.animationDelay = `${Math.random() * 2.5}s`;
+        container.appendChild(firework);
+
+        window.setTimeout(() => firework.remove(), 6500);
+    }
+}
+
+function startCelebrationEffects() {
+    if (celebrationStarted) return;
+    celebrationStarted = true;
+
+    typeGreeting();
+    makeHeartBurst(42);
+    launchConfetti(100);
+    launchBalloons(14);
+    launchFireworks(10);
+
+    window.setInterval(() => makeHeartBurst(12), 3000);
+    window.setInterval(() => launchConfetti(24), 4400);
+    window.setInterval(() => launchBalloons(5), 6400);
+    window.setInterval(() => launchFireworks(4), 5400);
+}
+
+startButton.addEventListener('click', () => {
+    playMusic();
+    showStep('step2');
+});
+
+envelopeContainer.addEventListener('click', () => {
+    envelopeContainer.classList.add('open');
+
+    window.setTimeout(() => {
+        showStep('step3');
+        letterContainer.classList.add('show');
+        if (musicWanted) playMusic();
+    }, 650);
+});
+
+unfoldButton.addEventListener('click', () => {
+    showStep('step4');
+    if (musicWanted) playMusic();
+    startCelebrationEffects();
+});
+
+musicToggle.addEventListener('click', () => {
+    if (backgroundMusic.paused) {
+        playMusic();
+    } else {
+        pauseMusic();
+    }
+});
