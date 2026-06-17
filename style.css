@@ -709,6 +709,7 @@ body::after {
 }
 
 .romance-scene,
+.pickup-scene,
 .forever-scene {
     position: relative;
     width: min(100%, 600px);
@@ -720,6 +721,7 @@ body::after {
 }
 
 .romance-note,
+.pickup-card,
 .forever-card {
     position: relative;
     z-index: 3;
@@ -747,6 +749,7 @@ body::after {
 }
 
 .romance-note::before,
+.pickup-card::before,
 .forever-card::before {
     content: '';
     position: absolute;
@@ -757,6 +760,7 @@ body::after {
 }
 
 .romance-note::after,
+.pickup-card::after,
 .forever-card::after {
     content: '♥';
     position: absolute;
@@ -784,6 +788,7 @@ body::after {
 }
 
 .romance-note h2,
+.pickup-card h2,
 .forever-card h2 {
     margin: 18px 0 18px;
     color: var(--cream);
@@ -808,10 +813,111 @@ body::after {
 }
 
 .note-sparkles,
+.pickup-glow,
 .forever-rings {
     position: absolute;
     inset: 0;
     pointer-events: none;
+}
+
+.pickup-scene {
+    width: min(100%, 640px);
+}
+
+.pickup-card {
+    min-height: min(540px, calc(100svh - 92px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(38px, 9vw, 62px) clamp(22px, 7vw, 42px);
+    overflow: hidden;
+    animation: noteFlipIn 0.7s cubic-bezier(0.18, 0.9, 0.32, 1.2) both;
+}
+
+.pickup-card .mini-label {
+    margin-top: 28px;
+}
+
+.pickup-actions {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    min-height: 72px;
+    margin-top: 6px;
+    transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.pickup-actions.is-hidden {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+    pointer-events: none;
+}
+
+.runaway-button {
+    transition: transform 0.22s cubic-bezier(0.18, 0.9, 0.32, 1.35), box-shadow 0.2s ease;
+}
+
+.pickup-answer {
+    position: relative;
+    z-index: 4;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+    transition: grid-template-rows 0.5s ease, opacity 0.45s ease, transform 0.45s ease;
+    pointer-events: none;
+}
+
+.pickup-answer.is-visible {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.pickup-answer > * {
+    overflow: hidden;
+}
+
+.pickup-answer p {
+    width: min(100%, 420px);
+    margin: 0 auto 26px;
+    color: var(--cream);
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.6rem, 12vw, 4.9rem);
+    line-height: 1;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.pickup-glow::before,
+.pickup-glow::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.48;
+    filter: blur(3px);
+    animation: ringPulse 3.2s ease-in-out infinite;
+}
+
+.pickup-glow::before {
+    top: 8%;
+    left: 7%;
+    width: 190px;
+    height: 190px;
+    border: 1px solid rgba(255, 92, 138, 0.5);
+}
+
+.pickup-glow::after {
+    right: 5%;
+    bottom: 8%;
+    width: 220px;
+    height: 220px;
+    border: 1px solid rgba(255, 209, 102, 0.42);
+    animation-delay: 1.1s;
 }
 
 .note-sparkles::before,
@@ -1047,11 +1153,13 @@ body::after {
     }
 
     .romance-scene,
+    .pickup-scene,
     .forever-scene {
         min-height: calc(100svh - 36px);
     }
 
-    .romance-note {
+    .romance-note,
+    .pickup-card {
         min-height: min(500px, calc(100svh - 82px));
     }
 
@@ -1076,7 +1184,12 @@ body::after {
     }
 
     .romance-note h2,
+    .pickup-card h2,
     .forever-card h2 {
         font-size: clamp(2.75rem, 12vw, 4.2rem);
+    }
+
+    .pickup-answer p {
+        font-size: clamp(2.35rem, 10vw, 3.8rem);
     }
 }
