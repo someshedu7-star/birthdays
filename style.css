@@ -711,7 +711,7 @@ body::after {
 .romance-scene,
 .forever-scene {
     position: relative;
-    width: min(100%, 540px);
+    width: min(100%, 600px);
     min-height: min(680px, calc(100svh - 40px));
     display: flex;
     align-items: center;
@@ -723,34 +723,61 @@ body::after {
 .forever-card {
     position: relative;
     z-index: 3;
-    width: min(100%, 440px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: min(100%, 500px);
+    border: 2px solid rgba(255, 255, 255, 0.72);
     border-radius: 8px;
     text-align: center;
     background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 209, 220, 0.12)),
-        rgba(61, 25, 52, 0.66);
+        linear-gradient(135deg, rgba(255, 248, 239, 0.18), rgba(255, 209, 220, 0.18)),
+        rgba(61, 25, 52, 0.78);
     backdrop-filter: blur(20px);
-    box-shadow: 0 28px 80px rgba(35, 10, 28, 0.42);
+    box-shadow:
+        0 28px 80px rgba(35, 10, 28, 0.48),
+        0 0 0 8px rgba(255, 209, 220, 0.12),
+        inset 0 0 38px rgba(255, 209, 102, 0.08);
 }
 
 .romance-note {
-    padding: clamp(28px, 8vw, 44px) 24px;
+    min-height: min(520px, calc(100svh - 104px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(34px, 9vw, 58px) clamp(22px, 7vw, 38px);
 }
 
 .romance-note::before,
 .forever-card::before {
     content: '';
     position: absolute;
-    inset: 11px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    inset: 12px;
+    border: 1px solid rgba(255, 209, 102, 0.62);
     border-radius: 6px;
     pointer-events: none;
 }
 
+.romance-note::after,
+.forever-card::after {
+    content: '♥';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    color: white;
+    background: linear-gradient(135deg, var(--rose), #ff9ab3);
+    box-shadow: 0 10px 26px rgba(255, 92, 138, 0.34);
+    font-size: 1.45rem;
+}
+
 .note-count {
     color: var(--gold);
-    font-size: 0.78rem;
+    margin-top: 28px;
+    font-size: clamp(0.78rem, 3vw, 0.88rem);
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -758,10 +785,10 @@ body::after {
 
 .romance-note h2,
 .forever-card h2 {
-    margin: 14px 0 16px;
+    margin: 18px 0 18px;
     color: var(--cream);
     font-family: 'Great Vibes', cursive;
-    font-size: clamp(3rem, 14vw, 5rem);
+    font-size: clamp(3.35rem, 15vw, 5.7rem);
     font-weight: 400;
     line-height: 0.95;
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
@@ -769,11 +796,11 @@ body::after {
 
 .romance-note p:not(.note-count),
 .forever-message {
-    width: min(100%, 340px);
-    margin: 0 auto 26px;
+    width: min(100%, 390px);
+    margin: 0 auto 30px;
     color: rgba(255, 255, 255, 0.9);
-    font-size: clamp(0.96rem, 4vw, 1.08rem);
-    line-height: 1.7;
+    font-size: clamp(1rem, 4vw, 1.15rem);
+    line-height: 1.78;
 }
 
 .note-enter {
@@ -819,20 +846,56 @@ body::after {
     animation: sceneHeartRise ease-out forwards;
 }
 
+.heart-drop {
+    position: absolute;
+    top: -42px;
+    z-index: 2;
+    color: rgba(255, 209, 220, 0.92);
+    pointer-events: none;
+    text-shadow: 0 8px 24px rgba(255, 92, 138, 0.45);
+    animation: heartDrop ease-in forwards;
+}
+
+.cracker-burst {
+    position: absolute;
+    z-index: 1;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    color: var(--gold);
+    background: currentColor;
+    box-shadow:
+        0 -42px 0 1px #ffd166,
+        30px -30px 0 0 #ff5c8a,
+        42px 0 0 1px #ffffff,
+        30px 30px 0 0 #7bdff2,
+        0 42px 0 1px #ffd166,
+        -30px 30px 0 0 #ff9ab3,
+        -42px 0 0 1px #ffffff,
+        -30px -30px 0 0 #ff5c8a;
+    animation: crackerPop 1.2s ease-out forwards;
+}
+
 .forever-scene {
-    width: min(100%, 620px);
+    width: min(100%, 760px);
 }
 
 .forever-card {
-    padding: clamp(30px, 8vw, 48px) 24px;
+    width: min(100%, 620px);
+    min-height: min(600px, calc(100svh - 72px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(42px, 10vw, 70px) clamp(22px, 7vw, 46px);
     animation: foreverReveal 0.9s cubic-bezier(0.18, 0.9, 0.32, 1.2) both;
 }
 
 .forever-name {
-    margin: 4px 0 18px;
+    margin: 10px 0 24px;
     color: var(--gold);
     font-family: 'Pacifico', cursive;
-    font-size: clamp(2.3rem, 12vw, 4rem);
+    font-size: clamp(3.2rem, 16vw, 6rem);
     line-height: 1;
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
 }
@@ -917,6 +980,36 @@ body::after {
     }
 }
 
+@keyframes heartDrop {
+    0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) rotate(-8deg) scale(0.75);
+    }
+    12% {
+        opacity: 0.95;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(96vh) translateX(22px) rotate(24deg) scale(1.16);
+    }
+}
+
+@keyframes crackerPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.18) rotate(0deg);
+        filter: blur(1px);
+    }
+    18% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.35) rotate(24deg);
+        filter: blur(0);
+    }
+}
+
 @media (max-width: 520px) {
     .step {
         padding: 18px;
@@ -957,6 +1050,14 @@ body::after {
     .forever-scene {
         min-height: calc(100svh - 36px);
     }
+
+    .romance-note {
+        min-height: min(500px, calc(100svh - 82px));
+    }
+
+    .forever-card {
+        min-height: min(560px, calc(100svh - 64px));
+    }
 }
 
 @media (max-height: 680px) {
@@ -967,5 +1068,15 @@ body::after {
 
     .signature {
         margin-top: 12px;
+    }
+
+    .romance-note,
+    .forever-card {
+        min-height: auto;
+    }
+
+    .romance-note h2,
+    .forever-card h2 {
+        font-size: clamp(2.75rem, 12vw, 4.2rem);
     }
 }
