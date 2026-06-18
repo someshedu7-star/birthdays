@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,500;1,600&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
     --night: #241225;
@@ -45,7 +45,7 @@ body::after {
     position: fixed;
     z-index: 0;
     color: rgba(255, 255, 255, 0.08);
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Playfair Display', serif;
     pointer-events: none;
 }
 
@@ -150,7 +150,7 @@ body::after {
 .welcome-title {
     margin: 12px 0 10px;
     color: var(--cream);
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Playfair Display', serif;
     font-size: clamp(3.2rem, 16vw, 5rem);
     font-weight: 400;
     line-height: 0.95;
@@ -325,7 +325,7 @@ body::after {
 .recipient-name {
     margin: 4px 0 14px;
     color: var(--gold);
-    font-family: 'Pacifico', cursive;
+    font-family: 'Playfair Display', serif;
     font-size: clamp(2.75rem, 14vw, 4.6rem);
     font-weight: 400;
     line-height: 0.98;
@@ -346,7 +346,8 @@ body::after {
     justify-content: center;
     margin-top: 18px;
     color: var(--blush);
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Lora', serif;
+    font-style: italic;
     font-size: clamp(1.65rem, 7vw, 2.35rem);
     line-height: 1;
 }
@@ -792,7 +793,7 @@ body::after {
 .forever-card h2 {
     margin: 18px 0 18px;
     color: var(--cream);
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Playfair Display', serif;
     font-size: clamp(3.35rem, 15vw, 5.7rem);
     font-weight: 400;
     line-height: 0.95;
@@ -809,6 +810,10 @@ body::after {
 }
 
 .note-enter {
+    animation: noteFlipIn 0.62s cubic-bezier(0.18, 0.9, 0.32, 1.2) both;
+}
+
+.pickup-enter {
     animation: noteFlipIn 0.62s cubic-bezier(0.18, 0.9, 0.32, 1.2) both;
 }
 
@@ -887,7 +892,8 @@ body::after {
     width: min(100%, 420px);
     margin: 0 auto 26px;
     color: var(--cream);
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Lora', serif;
+    font-style: italic;
     font-size: clamp(2.6rem, 12vw, 4.9rem);
     line-height: 1;
     text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
@@ -1000,7 +1006,7 @@ body::after {
 .forever-name {
     margin: 10px 0 24px;
     color: var(--gold);
-    font-family: 'Pacifico', cursive;
+    font-family: 'Playfair Display', serif;
     font-size: clamp(3.2rem, 16vw, 6rem);
     line-height: 1;
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
@@ -1131,6 +1137,7 @@ body::after {
     .celebration-card,
     .letter,
     .romance-note,
+    .pickup-card,
     .forever-card {
         width: 100%;
     }
