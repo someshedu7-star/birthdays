@@ -10,6 +10,9 @@ const runawayYesButton = document.getElementById('runawayYesButton');
 const noWhyButton = document.getElementById('noWhyButton');
 const pickupActions = document.getElementById('pickupActions');
 const pickupAnswer = document.getElementById('pickupAnswer');
+const pickupCount = document.getElementById('pickupCount');
+const pickupQuestion = document.getElementById('pickupQuestion');
+const pickupAnswerText = document.getElementById('pickupAnswerText');
 const pickupContinueButton = document.getElementById('pickupContinueButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicToggle = document.getElementById('musicToggle');
@@ -35,9 +38,24 @@ const romanticNotes = [
         text: 'You are special in ways words can only try to hold, and this little surprise is one tiny piece of that feeling.'
     }
 ];
+const pickupLines = [
+    {
+        question: 'Are you a camera?',
+        answer: 'Because every moment with you feels picture perfect.'
+    },
+    {
+        question: 'Are you a sunrise?',
+        answer: 'Because you make everything around you feel warmer and brighter.'
+    },
+    {
+        question: 'Are you a wish?',
+        answer: 'Because meeting you feels like something my heart quietly hoped for.'
+    }
+];
 let musicWanted = false;
 let celebrationStarted = false;
 let noteIndex = 0;
+let pickupIndex = 0;
 
 function showStep(stepId) {
     steps.forEach((step) => {
@@ -167,9 +185,20 @@ function moveRunawayButton() {
 }
 
 function resetPickupScene() {
+    const pickupLine = pickupLines[pickupIndex];
+    const pickupCard = document.querySelector('.pickup-card');
+
+    pickupCount.textContent = `Question ${pickupIndex + 1} of ${pickupLines.length}`;
+    pickupQuestion.textContent = pickupLine.question;
+    pickupAnswerText.textContent = pickupLine.answer;
+    pickupContinueButton.textContent = pickupIndex === pickupLines.length - 1 ? 'Wishes From' : 'Next Question';
     pickupActions.classList.remove('is-hidden');
     pickupAnswer.classList.remove('is-visible');
     runawayYesButton.style.transform = '';
+
+    pickupCard.classList.remove('pickup-enter');
+    void pickupCard.offsetWidth;
+    pickupCard.classList.add('pickup-enter');
 }
 
 function showPickupAnswer() {
@@ -299,6 +328,7 @@ nextNoteButton.addEventListener('click', () => {
         return;
     }
 
+    pickupIndex = 0;
     resetPickupScene();
     showStep('step6');
     makeSceneHearts(34);
@@ -316,6 +346,15 @@ runawayYesButton.addEventListener('focus', moveRunawayButton);
 noWhyButton.addEventListener('click', showPickupAnswer);
 
 pickupContinueButton.addEventListener('click', () => {
+    if (pickupIndex < pickupLines.length - 1) {
+        pickupIndex += 1;
+        resetPickupScene();
+        makeSceneHearts(26);
+        makeHeartDrops(18);
+        makeFirecrackerBurst(4);
+        return;
+    }
+
     showStep('step7');
     makeSceneHearts(60);
     makeHeartDrops(34);
