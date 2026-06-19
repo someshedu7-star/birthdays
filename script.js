@@ -60,8 +60,8 @@ const pickupLines = [
         answer: 'Because meeting you feels like something my heart quietly hoped for.'
     }
 ];
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://knccnerjqyiahfqupfwm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtuY2NuZXJqcXlpYWhmcXVwZndtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4Mzc0NTQsImV4cCI6MjA5NzQxMzQ1NH0.FPYVeF7QSQbk1iBdO12NrjbjaICm6NMq2ouBOZghZSw';
 const SUPABASE_TABLE = 'birthday_responses';
 let musicWanted = false;
 let celebrationStarted = false;
