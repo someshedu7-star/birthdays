@@ -988,6 +988,131 @@ body::after {
     animation: crackerPop 1.2s ease-out forwards;
 }
 
+.love-question-scene,
+.love-celebration-scene,
+.sure-scene,
+.reason-scene {
+    position: relative;
+    width: min(100%, 680px);
+    min-height: min(680px, calc(100svh - 40px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.love-card {
+    position: relative;
+    z-index: 3;
+    width: min(100%, 560px);
+    border: 2px solid rgba(255, 255, 255, 0.74);
+    border-radius: 8px;
+    padding: clamp(38px, 9vw, 64px) clamp(22px, 7vw, 44px);
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(255, 209, 220, 0.28), transparent 40%),
+        linear-gradient(135deg, rgba(255, 248, 239, 0.18), rgba(255, 209, 220, 0.18)),
+        rgba(61, 25, 52, 0.8);
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 30px 90px rgba(35, 10, 28, 0.5),
+        0 0 0 8px rgba(255, 209, 220, 0.13),
+        inset 0 0 44px rgba(255, 209, 102, 0.08);
+    animation: noteFlipIn 0.72s cubic-bezier(0.18, 0.9, 0.32, 1.2) both;
+}
+
+.love-card::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(255, 209, 102, 0.62);
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+.love-card h2 {
+    margin: 18px auto 24px;
+    width: min(100%, 500px);
+    color: var(--cream);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 13vw, 5.6rem);
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.love-actions {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.soft-button {
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.12);
+}
+
+.love-too-card {
+    min-height: min(590px, calc(100svh - 70px));
+}
+
+.love-too-card h2 {
+    color: var(--gold);
+    font-size: clamp(3.7rem, 16vw, 7rem);
+}
+
+.love-copy {
+    width: min(100%, 430px);
+    margin: 0 auto 26px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(0.98rem, 4vw, 1.15rem);
+    line-height: 1.75;
+}
+
+.reason-card h2 {
+    font-size: clamp(2.2rem, 9vw, 4.2rem);
+}
+
+.reason-label {
+    display: block;
+    margin: 12px auto 10px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.reason-input {
+    position: relative;
+    z-index: 4;
+    width: min(100%, 430px);
+    min-height: 118px;
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--ink);
+    background: rgba(255, 250, 243, 0.94);
+    box-shadow: inset 0 2px 8px rgba(35, 10, 28, 0.08);
+    font: 500 0.98rem/1.55 'Poppins', sans-serif;
+    resize: vertical;
+}
+
+.reason-input:focus {
+    outline: 3px solid rgba(255, 209, 102, 0.34);
+    border-color: var(--gold);
+}
+
+.save-status {
+    min-height: 22px;
+    margin: 10px 0 12px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.86rem;
+}
+
 .forever-scene {
     width: min(100%, 760px);
 }
@@ -1161,8 +1286,17 @@ body::after {
 
     .romance-scene,
     .pickup-scene,
+    .love-question-scene,
+    .love-celebration-scene,
+    .sure-scene,
+    .reason-scene,
     .forever-scene {
         min-height: calc(100svh - 36px);
+    }
+
+    .love-card {
+        width: 100%;
+        padding: clamp(34px, 9vw, 52px) 20px;
     }
 
     .romance-note,
@@ -1198,5 +1332,9 @@ body::after {
 
     .pickup-answer p {
         font-size: clamp(2.35rem, 10vw, 3.8rem);
+    }
+
+    .love-card h2 {
+        font-size: clamp(2.45rem, 10vw, 4rem);
     }
 }
