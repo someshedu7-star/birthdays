@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday [Your Name]]!</title>
+    <title>Happy Birthday To Yuhh!</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -105,6 +105,57 @@
                     <p id="pickupAnswerText">Because every moment with you feels picture perfect.</p>
                     <button id="pickupContinueButton" class="action-button" type="button">Next Question</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" id="stepLoveQuestion">
+        <div class="love-question-scene">
+            <div class="love-card">
+                <p class="mini-label">One honest question</p>
+                <h2>Do you love me back?</h2>
+                <div class="love-actions">
+                    <button id="loveYesButton" class="action-button" type="button">Yes</button>
+                    <button id="loveNoButton" class="action-button soft-button" type="button">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" id="stepLoveYes">
+        <div class="love-celebration-scene">
+            <div class="love-card love-too-card">
+                <p class="mini-label">My heart knew it</p>
+                <h2>Love you too</h2>
+                <p class="love-copy">This is the part where the whole sky turns into hearts.</p>
+                <button id="loveYesContinueButton" class="action-button" type="button">Wishes From</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" id="stepLoveSure">
+        <div class="sure-scene">
+            <div class="love-card">
+                <p class="mini-label">Wait wait wait</p>
+                <h2>Are you sure?</h2>
+                <div class="love-actions">
+                    <button id="sureYesButton" class="action-button soft-button" type="button">Yes</button>
+                    <button id="sureNoButton" class="action-button" type="button">No, I love you</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" id="stepLoveReason">
+        <div class="reason-scene">
+            <div class="love-card reason-card">
+                <p class="mini-label">Still, my heart says this</p>
+                <h2>I know you are beautiful, Pookie</h2>
+                <p class="love-copy">And I may not be that beautiful, but I will always love you, even if you may not.</p>
+                <label class="reason-label" for="loveReasonInput">Why you don't love?</label>
+                <textarea id="loveReasonInput" class="reason-input" rows="4" placeholder="Write your reason here..."></textarea>
+                <p id="saveStatus" class="save-status" aria-live="polite"></p>
+                <button id="saveReasonButton" class="action-button" type="button">Save Reason</button>
             </div>
         </div>
     </div>
