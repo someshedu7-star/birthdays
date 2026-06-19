@@ -14,6 +14,14 @@ const pickupCount = document.getElementById('pickupCount');
 const pickupQuestion = document.getElementById('pickupQuestion');
 const pickupAnswerText = document.getElementById('pickupAnswerText');
 const pickupContinueButton = document.getElementById('pickupContinueButton');
+const loveYesButton = document.getElementById('loveYesButton');
+const loveNoButton = document.getElementById('loveNoButton');
+const loveYesContinueButton = document.getElementById('loveYesContinueButton');
+const sureYesButton = document.getElementById('sureYesButton');
+const sureNoButton = document.getElementById('sureNoButton');
+const loveReasonInput = document.getElementById('loveReasonInput');
+const saveReasonButton = document.getElementById('saveReasonButton');
+const saveStatus = document.getElementById('saveStatus');
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicToggle = document.getElementById('musicToggle');
 const finalGreeting = document.getElementById('finalGreeting');
@@ -52,10 +60,14 @@ const pickupLines = [
         answer: 'Because meeting you feels like something my heart quietly hoped for.'
     }
 ];
+const SUPABASE_URL = '';
+const SUPABASE_ANON_KEY = '';
+const SUPABASE_TABLE = 'birthday_responses';
 let musicWanted = false;
 let celebrationStarted = false;
 let noteIndex = 0;
 let pickupIndex = 0;
+let loveLoopId = null;
 
 function showStep(stepId) {
     steps.forEach((step) => {
@@ -124,7 +136,7 @@ function makeHeartBurst(amount = 28) {
 }
 
 function makeSceneHearts(amount = 24) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .love-question-scene, .step.active .love-celebration-scene, .step.active .sure-scene, .step.active .reason-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -142,7 +154,7 @@ function makeSceneHearts(amount = 24) {
 }
 
 function makeHeartDrops(amount = 18) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .love-question-scene, .step.active .love-celebration-scene, .step.active .sure-scene, .step.active .reason-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -160,7 +172,7 @@ function makeHeartDrops(amount = 18) {
 }
 
 function makeFirecrackerBurst(amount = 4) {
-    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .forever-scene');
+    const activeScene = document.querySelector('.step.active .romance-scene, .step.active .pickup-scene, .step.active .love-question-scene, .step.active .love-celebration-scene, .step.active .sure-scene, .step.active .reason-scene, .step.active .forever-scene');
     if (!activeScene) return;
 
     for (let i = 0; i < amount; i += 1) {
@@ -207,6 +219,58 @@ function showPickupAnswer() {
     makeSceneHearts(30);
     makeHeartDrops(22);
     makeFirecrackerBurst(5);
+}
+
+function startLoveLoop() {
+    if (loveLoopId) window.clearInterval(loveLoopId);
+
+    makeSceneHearts(80);
+    makeHeartDrops(48);
+    makeFirecrackerBurst(10);
+    loveLoopId = window.setInterval(() => {
+        makeSceneHearts(24);
+        makeHeartDrops(18);
+        makeFirecrackerBurst(3);
+    }, 2200);
+}
+
+function stopLoveLoop() {
+    if (!loveLoopId) return;
+
+    window.clearInterval(loveLoopId);
+    loveLoopId = null;
+}
+
+async function saveLoveResponse(answer, reason = '') {
+    const payload = {
+        answer,
+        reason,
+        created_at: new Date().toISOString()
+    };
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        const savedResponses = JSON.parse(localStorage.getItem('birthday_responses') || '[]');
+        savedResponses.push(payload);
+        localStorage.setItem('birthday_responses', JSON.stringify(savedResponses));
+        return { savedLocally: true };
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+        method: 'POST',
+        headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        throw new Error('Could not save response');
+    }
+
+    return { savedLocally: false };
 }
 
 function launchConfetti(amount = 80) {
@@ -355,7 +419,7 @@ pickupContinueButton.addEventListener('click', () => {
         return;
     }
 
-    showStep('step7');
+    showStep('stepLoveQuestion');
     makeSceneHearts(60);
     makeHeartDrops(34);
     makeFirecrackerBurst(8);
@@ -363,7 +427,73 @@ pickupContinueButton.addEventListener('click', () => {
     launchFireworks(10);
 });
 
+loveYesButton.addEventListener('click', async () => {
+    showStep('stepLoveYes');
+    startLoveLoop();
+    try {
+        await saveLoveResponse('yes');
+    } catch (error) {
+        console.warn(error);
+    }
+});
+
+loveNoButton.addEventListener('click', () => {
+    stopLoveLoop();
+    showStep('stepLoveSure');
+    makeSceneHearts(24);
+    makeHeartDrops(14);
+});
+
+sureNoButton.addEventListener('click', async () => {
+    showStep('stepLoveYes');
+    startLoveLoop();
+    try {
+        await saveLoveResponse('yes_after_sure');
+    } catch (error) {
+        console.warn(error);
+    }
+});
+
+sureYesButton.addEventListener('click', () => {
+    stopLoveLoop();
+    showStep('stepLoveReason');
+    saveStatus.textContent = '';
+    loveReasonInput.value = '';
+    makeHeartDrops(18);
+});
+
+saveReasonButton.addEventListener('click', async () => {
+    const reason = loveReasonInput.value.trim();
+    saveReasonButton.disabled = true;
+    saveStatus.textContent = 'Saving...';
+
+    try {
+        const result = await saveLoveResponse('no', reason);
+        saveStatus.textContent = result.savedLocally
+            ? 'Saved locally. Add Supabase details in script.js to save online.'
+            : 'Saved.';
+        window.setTimeout(() => {
+            showStep('step7');
+            makeSceneHearts(36);
+            makeHeartDrops(20);
+        }, 1200);
+    } catch (error) {
+        saveStatus.textContent = 'Could not save. Please check Supabase settings.';
+    } finally {
+        saveReasonButton.disabled = false;
+    }
+});
+
+loveYesContinueButton.addEventListener('click', () => {
+    stopLoveLoop();
+    showStep('step7');
+    makeSceneHearts(48);
+    makeHeartDrops(30);
+    makeFirecrackerBurst(8);
+});
+
 replayButton.addEventListener('click', () => {
+    stopLoveLoop();
     showStep('step4');
     startCelebrationEffects();
     makeHeartBurst(36);
