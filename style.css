@@ -105,6 +105,21 @@ body::after {
     background: var(--gold);
 }
 
+.blush-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blush-pop {
+    position: absolute;
+    color: rgba(255, 209, 220, 0.72);
+    text-shadow: 0 8px 24px rgba(255, 92, 138, 0.38);
+    animation: blushPop ease-out forwards;
+}
+
 .welcome-card,
 .celebration-card,
 .letter {
@@ -163,6 +178,123 @@ body::after {
     color: rgba(255, 255, 255, 0.88);
     font-size: 1rem;
     line-height: 1.65;
+}
+
+.countdown-card {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 360px);
+    margin: 0 auto 24px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(255, 209, 220, 0.22), rgba(255, 209, 102, 0.1)),
+        rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 24px rgba(255, 209, 220, 0.08);
+}
+
+.countdown-title {
+    margin-bottom: 10px;
+    color: var(--blush);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.countdown-grid span {
+    min-width: 0;
+    padding: 10px 5px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 10px 22px rgba(35, 10, 28, 0.14);
+}
+
+.countdown-grid strong {
+    display: block;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.25rem, 6vw, 2rem);
+    line-height: 1;
+}
+
+.countdown-grid small {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.password-gate {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 340px);
+    margin: -4px auto 22px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 8px;
+    background: rgba(36, 18, 37, 0.24);
+}
+
+.password-gate.is-unlocked {
+    display: none;
+}
+
+.password-gate label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--blush);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.password-gate input {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    border-radius: 8px;
+    padding: 0 14px;
+    color: var(--ink);
+    background: rgba(255, 250, 243, 0.92);
+    font: 700 1rem/1 'Poppins', sans-serif;
+    text-align: center;
+}
+
+.password-gate input:focus {
+    outline: 3px solid rgba(255, 209, 102, 0.34);
+    border-color: var(--gold);
+}
+
+.password-gate p {
+    min-height: 18px;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+}
+
+.password-gate.has-error {
+    animation: passwordShake 0.34s ease;
+    border-color: rgba(255, 92, 138, 0.75);
+}
+
+.password-gate.has-error p {
+    color: var(--blush);
+}
+
+.password-gate.is-success {
+    border-color: rgba(255, 209, 102, 0.72);
 }
 
 .action-button {
@@ -338,6 +470,73 @@ body::after {
     color: rgba(255, 255, 255, 0.9);
     font-size: clamp(0.9rem, 3.8vw, 1.08rem);
     line-height: 1.6;
+}
+
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    width: min(100%, 560px);
+    margin: 16px auto 0;
+}
+
+.photo-frame {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.58);
+    border-radius: 8px;
+    background:
+        radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.34), transparent 28%),
+        linear-gradient(145deg, rgba(255, 209, 220, 0.62), rgba(255, 92, 138, 0.24) 58%, rgba(255, 209, 102, 0.24));
+    box-shadow:
+        0 14px 28px rgba(35, 10, 28, 0.26),
+        inset 0 0 24px rgba(255, 255, 255, 0.1);
+}
+
+.photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 6px;
+}
+
+.photo-frame span {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    margin: auto auto 12px;
+    border-radius: 50%;
+    color: var(--ink);
+    background: rgba(255, 248, 239, 0.86);
+    font: 700 0.72rem/1 'Poppins', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.photo-frame figcaption {
+    position: relative;
+    z-index: 1;
+    padding: 8px 6px 10px;
+    color: white;
+    background: linear-gradient(180deg, transparent, rgba(36, 18, 37, 0.52));
+    font-size: clamp(0.64rem, 2.7vw, 0.8rem);
+    font-weight: 700;
+}
+
+.photo-frame-two {
+    transform: translateY(8px) rotate(1deg);
+}
+
+.photo-frame-three {
+    transform: rotate(-1deg);
 }
 
 .signature {
@@ -587,6 +786,35 @@ body::after {
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes blushPop {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.6) rotate(-12deg);
+    }
+    16% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-72px) scale(1.28) rotate(16deg);
+    }
+}
+
+@keyframes passwordShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-6px);
+    }
+    50% {
+        transform: translateX(6px);
+    }
+    75% {
+        transform: translateX(-3px);
     }
 }
 
@@ -1271,6 +1499,16 @@ body::after {
         max-height: calc(100svh - 36px);
     }
 
+    .countdown-card {
+        padding: 12px;
+        margin-bottom: 20px;
+    }
+
+    .photo-gallery {
+        gap: 7px;
+        margin-top: 14px;
+    }
+
     .letter p {
         font-size: 0.95rem;
     }
@@ -1317,6 +1555,17 @@ body::after {
 
     .signature {
         margin-top: 12px;
+    }
+
+    .photo-gallery {
+        grid-template-columns: repeat(3, minmax(68px, 1fr));
+    }
+
+    .photo-frame span {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 8px;
+        font-size: 0.62rem;
     }
 
     .romance-note,
