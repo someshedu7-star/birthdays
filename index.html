@@ -12,6 +12,7 @@
         Your browser does not support the audio element.
     </audio>
 
+    <div class="blush-layer" aria-hidden="true"></div>
     <button id="musicToggle" class="music-toggle" type="button" aria-label="Toggle music">Music Off</button>
 
     <div class="step active" id="step1">
@@ -19,6 +20,20 @@
             <p class="mini-label">A EffortFull birthday surprise</p>
             <h1 class="welcome-title">For My Loved One!</h1>
             <p class="welcome-message">Tap below and let the surprise begin.</p>
+            <div class="countdown-card" aria-label="Countdown to 18 August 2026">
+                <p class="countdown-title">18 Aug 2026 is getting closer</p>
+                <div class="countdown-grid">
+                    <span><strong id="countDays">00</strong><small>Days</small></span>
+                    <span><strong id="countHours">00</strong><small>Hours</small></span>
+                    <span><strong id="countMinutes">00</strong><small>Min</small></span>
+                    <span><strong id="countSeconds">00</strong><small>Sec</small></span>
+                </div>
+            </div>
+            <div class="password-gate" id="passwordGate">
+                <label for="celebrationPassword">Secret password until birthday</label>
+                <input id="celebrationPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter password">
+                <p id="passwordMessage" aria-live="polite"></p>
+            </div>
             <button id="startButton" class="action-button" type="button">Start Celebration</button>
         </div>
     </div>
@@ -73,6 +88,20 @@
                     </div>
                 </div>
                 <p class="final-wish">May your day feel as soft as a favorite song, as bright as candlelight, and as unforgettable as the Me who love you.</p>
+                <div class="photo-gallery" aria-label="Lovely photo memories">
+                    <figure class="photo-frame photo-frame-one">
+                        <span>Memory</span>
+                        <figcaption>Cutest smile</figcaption>
+                    </figure>
+                    <figure class="photo-frame photo-frame-two">
+                        <span>Us</span>
+                        <figcaption>Soft moments</figcaption>
+                    </figure>
+                    <figure class="photo-frame photo-frame-three">
+                        <span>Forever</span>
+                        <figcaption>My favorite</figcaption>
+                    </figure>
+                </div>
                 <p class="signature">With love and best wishes <span class="heart-icon"></span></p>
                 <button id="continueButton" class="action-button after-button" type="button">Continue</button>
             </div>
