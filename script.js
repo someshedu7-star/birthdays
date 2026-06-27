@@ -29,9 +29,19 @@ const romanceNote = document.getElementById('romanceNote');
 const noteCount = document.getElementById('noteCount');
 const noteTitle = document.getElementById('noteTitle');
 const noteText = document.getElementById('noteText');
+const blushLayer = document.querySelector('.blush-layer');
+const countDays = document.getElementById('countDays');
+const countHours = document.getElementById('countHours');
+const countMinutes = document.getElementById('countMinutes');
+const countSeconds = document.getElementById('countSeconds');
+const passwordGate = document.getElementById('passwordGate');
+const celebrationPassword = document.getElementById('celebrationPassword');
+const passwordMessage = document.getElementById('passwordMessage');
 
 const balloonColors = ['#ff5c8a', '#ffd166', '#ef476f', '#7bdff2', '#cdb4db'];
 const confettiColors = ['#ff5c8a', '#ffd166', '#ffffff', '#f7a1c4', '#b8f2e6'];
+const countdownTarget = new Date('2026-08-18T00:00:00+05:30').getTime();
+const TEMP_PASSWORD = '18AUG2012';
 const romanticNotes = [
     {
         title: 'For every smile',
@@ -68,11 +78,55 @@ let celebrationStarted = false;
 let noteIndex = 0;
 let pickupIndex = 0;
 let loveLoopId = null;
+let blushLoopId = null;
 
 function showStep(stepId) {
     steps.forEach((step) => {
         step.classList.toggle('active', step.id === stepId);
     });
+}
+
+function updateCountdown() {
+    if (!countDays || !countHours || !countMinutes || !countSeconds) return;
+
+    const distance = Math.max(0, countdownTarget - Date.now());
+    const days = Math.floor(distance / 86400000);
+    const hours = Math.floor((distance % 86400000) / 3600000);
+    const minutes = Math.floor((distance % 3600000) / 60000);
+    const seconds = Math.floor((distance % 60000) / 1000);
+
+    countDays.textContent = String(days).padStart(2, '0');
+    countHours.textContent = String(hours).padStart(2, '0');
+    countMinutes.textContent = String(minutes).padStart(2, '0');
+    countSeconds.textContent = String(seconds).padStart(2, '0');
+
+    if (passwordGate && distance <= 0) {
+        passwordGate.classList.add('is-unlocked');
+    }
+}
+
+function isPasswordRequired() {
+    return Date.now() < countdownTarget;
+}
+
+function canStartCelebration() {
+    if (!isPasswordRequired()) return true;
+
+    const enteredPassword = celebrationPassword.value.trim();
+    if (enteredPassword === TEMP_PASSWORD) {
+        passwordMessage.textContent = 'Unlocked.';
+        passwordGate.classList.remove('has-error');
+        passwordGate.classList.add('is-success');
+        return true;
+    }
+
+    passwordMessage.textContent = 'Not yet, pookie. Try the secret date.';
+    passwordGate.classList.remove('is-success');
+    passwordGate.classList.add('has-error');
+    celebrationPassword.focus();
+    celebrationPassword.select();
+    makeBlushPops(8);
+    return false;
 }
 
 async function playMusic() {
@@ -185,6 +239,31 @@ function makeFirecrackerBurst(amount = 4) {
 
         window.setTimeout(() => burst.remove(), 1800);
     }
+}
+
+function makeBlushPops(amount = 8) {
+    if (!blushLayer) return;
+
+    for (let i = 0; i < amount; i += 1) {
+        const blush = document.createElement('span');
+        blush.className = 'blush-pop';
+        blush.textContent = i % 3 === 0 ? '♡' : '♥';
+        blush.style.left = `${Math.random() * 100}%`;
+        blush.style.top = `${10 + Math.random() * 78}%`;
+        blush.style.animationDelay = `${Math.random() * 0.7}s`;
+        blush.style.animationDuration = `${3.4 + Math.random() * 2.8}s`;
+        blush.style.fontSize = `${14 + Math.random() * 22}px`;
+        blushLayer.appendChild(blush);
+
+        window.setTimeout(() => blush.remove(), 7000);
+    }
+}
+
+function startBlushLoop() {
+    if (blushLoopId) return;
+
+    makeBlushPops(14);
+    blushLoopId = window.setInterval(() => makeBlushPops(6), 2400);
 }
 
 function moveRunawayButton() {
@@ -333,6 +412,7 @@ function startCelebrationEffects() {
     launchConfetti(100);
     launchBalloons(14);
     launchFireworks(10);
+    startBlushLoop();
 
     window.setInterval(() => makeHeartBurst(12), 3000);
     window.setInterval(() => launchConfetti(24), 4400);
@@ -353,11 +433,21 @@ function renderNote() {
     makeSceneHearts(18);
     makeHeartDrops(14);
     makeFirecrackerBurst(3);
+    makeBlushPops(10);
 }
 
 startButton.addEventListener('click', () => {
+    if (!canStartCelebration()) return;
+
     playMusic();
     showStep('step2');
+    startBlushLoop();
+});
+
+celebrationPassword.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        startButton.click();
+    }
 });
 
 envelopeContainer.addEventListener('click', () => {
@@ -506,3 +596,6 @@ musicToggle.addEventListener('click', () => {
         pauseMusic();
     }
 });
+
+updateCountdown();
+window.setInterval(updateCountdown, 1000);
