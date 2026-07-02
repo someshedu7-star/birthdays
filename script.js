@@ -41,7 +41,7 @@ const passwordMessage = document.getElementById('passwordMessage');
 const balloonColors = ['#ff5c8a', '#ffd166', '#ef476f', '#7bdff2', '#cdb4db'];
 const confettiColors = ['#ff5c8a', '#ffd166', '#ffffff', '#f7a1c4', '#b8f2e6'];
 const countdownTarget = new Date('2026-08-18T00:00:00+05:30').getTime();
-const TEMP_PASSWORD = '1234';
+const TEMP_PASSWORD = '123';
 const romanticNotes = [
     {
         title: 'For every smile',
